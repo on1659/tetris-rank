@@ -22,9 +22,19 @@
   let startTime = null;
   let gameTime = 0;
 
-  // 랭킹 불러오기
+  // 랭킹 불러오기 + 모바일 확대 방지
   onMount(async () => {
     rankings = await getRankings();
+    
+    // 더블탭 확대 방지
+    let lastTap = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) {
+        e.preventDefault();
+      }
+      lastTap = now;
+    }, { passive: false });
   });
 
   // 게임 시작
